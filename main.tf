@@ -31,7 +31,7 @@ resource "google_bigquery_table" "my_table" {
     "type": "INTEGER",
     "mode": "NULLABLE",
     "description": "age as an integer"
-  }
+  },
   {
     "name": "gender",
     "type": "STRING",
