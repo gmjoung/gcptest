@@ -31,22 +31,14 @@ resource "google_bigquery_table" "my_table" {
 }
 
 # Adding basic data to created table in BQ dataset
-resource "google_bigquery_table_data_insert_all" "my_table_data" {
+resource "google_bigquery_table_data" "my_table_data" {
   dataset_id = google_bigquery_dataset.my_dataset.dataset_id
   table_id   = google_bigquery_table.my_table.table_id
 
-  rows = [
-    {
-      "json" = {
-        "name" = "Gumin",
-        "age"  = 27
-      }
-    },
-    {
-      "json" = {
-        "name" = "Arpan",
-        "age"  = 26
-      }
-    }
-  ]
+  source_format = "NEWLINE_DELIMITED_JSON"
+
+  json = <<JSON
+  { "name": "Gumin", "age": 27 }
+  { "name": "Arpan2", "age": 26 }
+  JSON
 }
