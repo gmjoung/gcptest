@@ -1,6 +1,6 @@
 # Connecting to Project
 provider "google" {
-  project = "project-test1"
+  project = "inbound-decker-382207" #test project ID from GCP
   region  = "europe-west1"
 }
 
