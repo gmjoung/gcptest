@@ -18,16 +18,23 @@ resource "google_bigquery_table" "my_table" {
   dataset_id = google_bigquery_dataset.my_dataset.dataset_id
   table_id   = "table1"
 
-  schema {
-    fields {
-      name = "name"
-      type = "STRING"
-    }
-    fields {
-      name = "age"
-      type = "INTEGER"
-    }
+  schema = <<EOF
+[
+  {
+    "name": "name",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "name as string"
+  },
+  {
+    "name": "age",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "age as an integer"
   }
+]
+EOF
+
 }
 
 # Adding basic data to created table in BQ dataset !removed for now
