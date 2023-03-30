@@ -42,3 +42,11 @@ resource "google_bigquery_table" "my_table" {
 EOF
 
 }
+
+# Enabling required APIs for Vertex AI Workbench usage
+resource "google_project_service" "vertex_ai" {
+  service = "aiplatform.googleapis.com"
+}
+resource "google_project_service" "notebooks" {
+  service = "notebooks.googleapis.com"
+}
