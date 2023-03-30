@@ -43,10 +43,17 @@ EOF
 
 }
 
+# Enabling Cloud Resource Manager
+resource "google_project_service" "cloud_resource_manager" {
+  service = "cloudresourcemanager.googleapis.com"
+}
+
 # Enabling required APIs for Vertex AI Workbench usage
 resource "google_project_service" "vertex_ai" {
   service = "aiplatform.googleapis.com"
+  depends_on = [google_project_service.cloud_resource_manager]
 }
 resource "google_project_service" "notebooks" {
   service = "notebooks.googleapis.com"
+  depends_on = [google_project_service.cloud_resource_manager]
 }
