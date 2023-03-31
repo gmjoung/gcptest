@@ -57,3 +57,30 @@ resource "google_project_service" "notebooks" {
   service = "notebooks.googleapis.com"
   depends_on = [google_project_service.cloud_resource_manager]
 }
+
+# Vertex AI instance
+resource "google_workflows_region_instance" "my_instance" {
+  name     = "my-workbench-instance"
+  region   = "europe-west11"
+  location = "europe-west1"
+
+
+  # Define the notebook configuration
+  notebook_config {
+    container_image_uri = "gcr.io/deeplearning-platform-release/tf2-cpu.2-1"
+    port = 8080
+  }
+}
+
+# Create a firewall rule to allow access to the notebook
+resource "google_compute_firewall" "notebook_firewall" {
+  name    = "notebook-firewall"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8080"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
