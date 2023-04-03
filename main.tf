@@ -69,7 +69,7 @@ resource "google_notebooks_instance" "basic_instance" {
   location       = "us-west1-a"
   machine_type   = "e2-medium"
   vm_image {
-    project      = "inbound-decker-382207"
-    image_family = "tf-latest-cpu"
+    project      = "deeplearning-platform-release"
+    image_family = "tf-ent-2-9-cull3-notebooks"
   }
 }
