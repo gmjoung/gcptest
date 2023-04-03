@@ -40,57 +40,36 @@ resource "google_bigquery_table" "my_table" {
   }
 ]
 EOF
-
 }
 
 # Enabling Cloud Resource Manager
 resource "google_project_service" "cloud_resource_manager" {
-  service = "cloudresourcemanager.googleapis.com"
+  provider           = google
+  service            = "cloudresourcemanager.googleapis.com"
+  disable_on_destroy = false
 }
 
 # Enabling required APIs for Vertex AI Workbench usage
 resource "google_project_service" "vertex_ai" {
-  service = "aiplatform.googleapis.com"
-  depends_on = [google_project_service.cloud_resource_manager]
-}
-resource "google_project_service" "notebooks" {
-  service = "notebooks.googleapis.com"
-  depends_on = [google_project_service.cloud_resource_manager]
+  provider           = google
+  service            = "aiplatform.googleapis.com"
+  disable_on_destroy = false
 }
 
-resource "google_notebooks_instance" "instance" {
-  name = "notebooks-instance"
-  location = "us-west1-a"
-  machine_type = "e2-medium"
+resource "google_project_service" "notebooks" {
+  provider           = google
+  service            = "notebooks.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Deploying notebook
+resource "google_notebooks_instance" "basic_instance" {
+  project        ="inbound-decker-382207"
+  name           = "notebooks-instance-1"
+  location       = "us-west1-a"
+  machine_type   = "e2-medium"
   vm_image {
     project      = "inbound-decker-382207"
     image_family = "tf-latest-cpu"
   }
 }
-
-# # Vertex AI instance
-# resource "google_workflows_region_instance" "my_instance" {
-#   name     = "my-workbench-instance"
-#   region   = "europe-west11"
-#   location = "europe-west1"
-
-
-#   # Define the notebook configuration
-#   notebook_config {
-#     container_image_uri = "gcr.io/deeplearning-platform-release/tf2-cpu.2-1"
-#     port = 8080
-#   }
-# }
-
-# # Create a firewall rule to allow access to the notebook
-# resource "google_compute_firewall" "notebook_firewall" {
-#   name    = "notebook-firewall"
-#   network = "default"
-
-#   allow {
-#     protocol = "tcp"
-#     ports    = ["8080"]
-#   }
-
-#   source_ranges = ["0.0.0.0/0"]
-# }
